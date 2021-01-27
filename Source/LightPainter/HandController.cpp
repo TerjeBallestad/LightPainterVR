@@ -13,6 +13,15 @@ AHandController::AHandController()
 	MotionControllerComponent->SetShowDeviceModel(true);
 }
 
+void AHandController::TriggerPressed()
+{
+	AStroke* Stroke = GetWorld()->SpawnActor<AStroke>(StrokeClass, GetActorTransform());
+}
+
+void AHandController::TriggerReleased()
+{
+}
+
 void AHandController::BeginPlay()
 {
 	Super::BeginPlay();

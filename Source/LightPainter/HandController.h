@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "MotionControllerComponent.h"
+#include "Stroke.h"
 #include "GameFramework/Actor.h"
 #include "HandController.generated.h"
 
@@ -16,6 +17,8 @@ public:
 	AHandController();
 
 	void SetHand(const EControllerHand Hand) const { MotionControllerComponent->SetTrackingSource(Hand); };
+	void TriggerPressed();
+	void TriggerReleased();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -27,5 +30,8 @@ private:
 	// Components
 	UPROPERTY(VisibleAnywhere)
 	UMotionControllerComponent* MotionControllerComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AStroke> StrokeClass;
 
 };

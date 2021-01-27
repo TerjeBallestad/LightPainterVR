@@ -17,10 +17,15 @@ class LIGHTPAINTER_API AVRPawn : public APawn
 public:
 	AVRPawn();
 
+
 protected:
 	virtual void BeginPlay() override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
+	void RightTriggerPressed(){ if(RightMController) RightMController->TriggerPressed(); };
+	void RightTriggerReleased(){ if(RightMController) RightMController->TriggerReleased(); };
+	
 	// Config
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AHandController> HandControllerClass;
