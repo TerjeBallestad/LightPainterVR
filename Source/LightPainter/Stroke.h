@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Components/SplineMeshComponent.h"
 #include "GameFramework/Actor.h"
 #include "Stroke.generated.h"
 
@@ -12,15 +14,25 @@ class LIGHTPAINTER_API AStroke : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AStroke();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	void Update(FVector CursorLocation);
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
 
+	USplineMeshComponent* CreateSplineMesh();
+
+	// Components
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* Root;
+
+	// Config 
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMesh* SplineMesh;
+
+	UPROPERTY(EditDefaultsOnly)
+	UMaterialInterface* SplineMaterial;
+
+	// State
+	FVector PreviousCursorLocation;
 };

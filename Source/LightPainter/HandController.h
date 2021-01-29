@@ -34,4 +34,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AStroke> StrokeClass;
 
+	// State
+	UPROPERTY()
+	AStroke* CurrentStroke;
+
 };

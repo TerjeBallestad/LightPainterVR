@@ -13,13 +13,24 @@ AHandController::AHandController()
 	MotionControllerComponent->SetShowDeviceModel(true);
 }
 
+void AHandController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if(CurrentStroke)
+	{
+		CurrentStroke->Update(GetActorLocation());
+	}
+}
+
 void AHandController::TriggerPressed()
 {
-	AStroke* Stroke = GetWorld()->SpawnActor<AStroke>(StrokeClass, GetActorTransform());
+	CurrentStroke = GetWorld()->SpawnActor<AStroke>(StrokeClass);
 }
 
 void AHandController::TriggerReleased()
 {
+	CurrentStroke = nullptr;
 }
 
 void AHandController::BeginPlay()
@@ -27,8 +38,4 @@ void AHandController::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AHandController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
 
