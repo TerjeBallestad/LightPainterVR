@@ -3,6 +3,9 @@
 
 #include "Stroke.h"
 
+#include "Kismet/KismetMathLibrary.h"
+#include "Math/Rotator.h"
+
 // Sets default values
 AStroke::AStroke()
 {
@@ -10,26 +13,50 @@ AStroke::AStroke()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	SetRootComponent(Root);	
+	SetRootComponent(Root);
+
+	StrokeMeshes = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("StrokeMeshes"));
+	StrokeMeshes->SetupAttachment(Root);
 }
 
 void AStroke::Update(FVector CursorLocation)
 {
-	USplineMeshComponent* Spline = CreateSplineMesh();
-	FVector StartPosition = GetActorTransform().InverseTransformPosition(CursorLocation);
-	FVector EndPosition = GetActorTransform().InverseTransformPosition(PreviousCursorLocation);
-	Spline->SetStartAndEnd(StartPosition, FVector::ZeroVector, EndPosition, FVector::ZeroVector);
-	
+	FVector LocalCursorLocation = GetTransform().InverseTransformPosition(CursorLocation);
+	FTransform NewStrokeTransform;
+	NewStrokeTransform.SetLocation(LocalCursorLocation);
+	StrokeMeshes->AddInstance(GetNextSegmentTransform(CursorLocation));
+
 	PreviousCursorLocation = CursorLocation;
 }
 
-USplineMeshComponent* AStroke::CreateSplineMesh()
+FTransform AStroke::GetNextSegmentTransform(FVector CurrentLocation)
 {
-	USplineMeshComponent* NewSpline =NewObject<USplineMeshComponent>(this);
-	NewSpline ->SetMobility(EComponentMobility::Movable);
-	NewSpline->AttachToComponent(Root,FAttachmentTransformRules::SnapToTargetIncludingScale);
-	NewSpline->SetStaticMesh(SplineMesh);
-	NewSpline->SetMaterial(0, SplineMaterial);
-	NewSpline->RegisterComponent();
-	return  NewSpline;
+	FTransform SegmentTransform;
+
+	SegmentTransform.SetLocation(GetNextSegmentLocation(CurrentLocation));
+	SegmentTransform.SetRotation(GetNextSegmentRotation(CurrentLocation));
+	SegmentTransform.SetScale3D(GetNextSegmentScale(CurrentLocation));
+	
+	return SegmentTransform;
 }
+
+FVector AStroke::GetNextSegmentLocation(FVector CurrentLocation)
+{
+	if(PreviousCursorLocation.IsNearlyZero())
+	{
+		PreviousCursorLocation = CurrentLocation;
+	}
+	return GetTransform().InverseTransformPosition(PreviousCursorLocation);
+}
+
+FQuat AStroke::GetNextSegmentRotation(FVector CurrentLocation) 
+{
+	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(PreviousCursorLocation, CurrentLocation);
+	return Rotator.Quaternion();
+}
+
+FVector AStroke::GetNextSegmentScale(FVector CurrentLocation) 
+{
+	return FVector((CurrentLocation - PreviousCursorLocation).Size(), 1, 1);
+}
+

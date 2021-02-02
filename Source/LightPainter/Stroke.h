@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 
-#include "Components/SplineMeshComponent.h"
-#include "GameFramework/Actor.h"
+#include "Components/InstancedStaticMeshComponent.h"
+ #include "GameFramework/Actor.h"
 #include "Stroke.generated.h"
 
 UCLASS()
@@ -20,18 +20,17 @@ public:
 
 private:
 
-	USplineMeshComponent* CreateSplineMesh();
+	FTransform GetNextSegmentTransform(FVector CurrentLocation);
+	FVector GetNextSegmentLocation(FVector CurrentLocation);
+	FQuat GetNextSegmentRotation(FVector CurrentLocation);
+	FVector GetNextSegmentScale (FVector CurrentLocation);
 
 	// Components
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 
-	// Config 
-	UPROPERTY(EditDefaultsOnly)
-	UStaticMesh* SplineMesh;
-
-	UPROPERTY(EditDefaultsOnly)
-	UMaterialInterface* SplineMaterial;
+	UPROPERTY(VisibleAnywhere)
+	UInstancedStaticMeshComponent* StrokeMeshes;
 
 	// State
 	FVector PreviousCursorLocation;
