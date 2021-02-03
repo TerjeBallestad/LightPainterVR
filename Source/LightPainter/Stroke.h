@@ -21,6 +21,7 @@ public:
 private:
 
 	FTransform GetNextSegmentTransform(FVector CurrentLocation);
+	FTransform GetNextJointTransform(FVector CurrentLocation);
 	FVector GetNextSegmentLocation(FVector CurrentLocation);
 	FQuat GetNextSegmentRotation(FVector CurrentLocation);
 	FVector GetNextSegmentScale (FVector CurrentLocation);
@@ -31,6 +32,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UInstancedStaticMeshComponent* StrokeMeshes;
+
+	UPROPERTY(VisibleAnywhere)
+	UInstancedStaticMeshComponent* JointMeshes;
 
 	// State
 	FVector PreviousCursorLocation;
