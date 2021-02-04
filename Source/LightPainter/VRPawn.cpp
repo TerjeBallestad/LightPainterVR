@@ -4,6 +4,7 @@
 #include "VRPawn.h"
 
 #include "Camera/CameraComponent.h"
+#include "PaintSaveGame.h"
 
 // Sets default values
 AVRPawn::AVRPawn()
@@ -37,6 +38,9 @@ void AVRPawn::BeginPlay()
 		RightMController->SetOwner(this);
 		RightMController->SetHand(EControllerHand::Right);
 	}
+
+	UPaintSaveGame* Painting = UPaintSaveGame::Create();
+	Painting->Save();
 	
 }
 
