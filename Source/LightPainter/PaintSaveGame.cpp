@@ -12,6 +12,11 @@ UPaintSaveGame* UPaintSaveGame::Create()
 
 bool UPaintSaveGame::Save()
 {
-	return UGameplayStatics::SaveGameToSlot(this, TEXT("Test"), 0);
+	return UGameplayStatics::SaveGameToSlot(this, TEXT("Slot1"), 0);
+}
+
+UPaintSaveGame* UPaintSaveGame::Load()
+{
+	return Cast<UPaintSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Slot1"), 0));
 }
 	

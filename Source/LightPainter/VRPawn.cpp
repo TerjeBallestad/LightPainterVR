@@ -3,6 +3,9 @@
 
 #include "VRPawn.h"
 
+#include <string>
+
+
 #include "Camera/CameraComponent.h"
 #include "PaintSaveGame.h"
 
@@ -20,13 +23,6 @@ AVRPawn::AVRPawn()
 	VRCamera->SetupAttachment(VRRoot);
 }
 
-void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAction("RightTrigger",IE_Pressed, this, &AVRPawn::RightTriggerPressed);
-	PlayerInputComponent->BindAction("RightTrigger",IE_Released, this, &AVRPawn::RightTriggerReleased);
-}
-
 void AVRPawn::BeginPlay()
 {
 	Super::BeginPlay();
@@ -39,8 +35,37 @@ void AVRPawn::BeginPlay()
 		RightMController->SetHand(EControllerHand::Right);
 	}
 
-	UPaintSaveGame* Painting = UPaintSaveGame::Create();
-	Painting->Save();
+
 	
 }
+
+void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	PlayerInputComponent->BindAction(TEXT("RightTrigger"),IE_Pressed, this, &AVRPawn::RightTriggerPressed);
+	PlayerInputComponent->BindAction(TEXT("RightTrigger"),IE_Released, this, &AVRPawn::RightTriggerReleased);
+	PlayerInputComponent->BindAction(TEXT("Save"), IE_Released, this, &AVRPawn::Save);
+	PlayerInputComponent->BindAction(TEXT("Load"), IE_Released, this, &AVRPawn::Load);
+}
+
+void AVRPawn::Save()
+{
+	UPaintSaveGame* Painting = UPaintSaveGame::Create();
+	Painting->SetState("hello world");
+	UE_LOG(LogTemp, Warning, TEXT("Painting State  %s"), *Painting->GetState());
+	Painting->Save();
+}
+
+void AVRPawn::Load()
+{
+	UPaintSaveGame* Painting = UPaintSaveGame::Load();
+	if(Painting)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Loading %s"), *Painting->GetState());
+	} else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Save game not Found"));
+	}
+}
+
 

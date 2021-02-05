@@ -25,6 +25,9 @@ protected:
 private:
 	void RightTriggerPressed(){ if(RightMController) RightMController->TriggerPressed(); };
 	void RightTriggerReleased(){ if(RightMController) RightMController->TriggerReleased(); };
+
+	void Save();
+	void Load();
 	
 	// Config
 	UPROPERTY(EditDefaultsOnly)
