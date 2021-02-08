@@ -3,6 +3,8 @@
 
 #include "VRPawn.h"
 
+
+#include "HandControllerBase.h"
 #include "Camera/CameraComponent.h"
 #include "PaintSaveGame.h"
 
@@ -24,16 +26,13 @@ void AVRPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RightMController = GetWorld()->SpawnActor<AHandController>(HandControllerClass);
+	RightMController = GetWorld()->SpawnActor<AHandControllerBase>(PaintBrushHandControllerClass);
 	if(RightMController != nullptr)
 	{
 		RightMController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 		RightMController->SetOwner(this);
 		RightMController->SetHand(EControllerHand::Right);
 	}
-
-
-	
 }
 
 void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

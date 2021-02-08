@@ -3,22 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MotionControllerComponent.h"
+
+#include "HandControllerBase.h"
 #include "Stroke.h"
-#include "GameFramework/Actor.h"
-#include "HandController.generated.h"
+#include "PaintBrushHandController.generated.h"
 
 UCLASS()
-class LIGHTPAINTER_API AHandController : public AActor
+class LIGHTPAINTER_API APaintBrushHandController : public AHandControllerBase
 {
 	GENERATED_BODY()
 	
 public:	
-	AHandController();
+	APaintBrushHandController();
 
-	void SetHand(const EControllerHand Hand) const { MotionControllerComponent->SetTrackingSource(Hand); };
-	void TriggerPressed();
-	void TriggerReleased();
+	virtual void TriggerPressed() override;
+	virtual void TriggerReleased() override;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -28,8 +27,6 @@ public:
 
 private:
 	// Components
-	UPROPERTY(VisibleAnywhere)
-	UMotionControllerComponent* MotionControllerComponent;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AStroke> StrokeClass;
