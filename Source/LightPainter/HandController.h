@@ -32,7 +32,7 @@ private:
 	UMotionControllerComponent* MotionControllerComponent;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AStroke> StrokeClass;
+	TSubclassOf<class AStroke> StrokeClass;
 
 	// State
 	UPROPERTY()

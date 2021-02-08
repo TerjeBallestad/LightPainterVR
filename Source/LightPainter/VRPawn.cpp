@@ -3,9 +3,6 @@
 
 #include "VRPawn.h"
 
-#include <string>
-
-
 #include "Camera/CameraComponent.h"
 #include "PaintSaveGame.h"
 
@@ -52,6 +49,7 @@ void AVRPawn::Save()
 {
 	UPaintSaveGame* Painting = UPaintSaveGame::Create();
 	Painting->SetState("hello world");
+	Painting->SerializeFromWorld(GetWorld());
 	UE_LOG(LogTemp, Warning, TEXT("Painting State  %s"), *Painting->GetState());
 	Painting->Save();
 }
@@ -61,6 +59,7 @@ void AVRPawn::Load()
 	UPaintSaveGame* Painting = UPaintSaveGame::Load();
 	if(Painting)
 	{
+		Painting->DeserializeToWorld(GetWorld());
 		UE_LOG(LogTemp, Warning, TEXT("Loading %s"), *Painting->GetState());
 	} else
 	{

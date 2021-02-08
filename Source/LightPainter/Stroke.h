@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
 
+#include "PaintSaveGame.h"
 #include "Components/InstancedStaticMeshComponent.h"
- #include "GameFramework/Actor.h"
+
 #include "Stroke.generated.h"
 
 UCLASS()
@@ -18,13 +20,16 @@ public:
 
 	void Update(FVector CursorLocation);
 
+	FStrokeState SerializeToStruct() const;
+	static AStroke* SpawnAndDeserializeFromStruct(UWorld* World, const FStrokeState& StrokeState);
+
 private:
 
-	FTransform GetNextSegmentTransform(FVector CurrentLocation);
-	FTransform GetNextJointTransform(FVector CurrentLocation);
-	FVector GetNextSegmentLocation(FVector CurrentLocation);
-	FQuat GetNextSegmentRotation(FVector CurrentLocation);
-	FVector GetNextSegmentScale (FVector CurrentLocation);
+	FTransform GetNextSegmentTransform(FVector CurrentLocation) const;
+	FTransform GetNextJointTransform(FVector CurrentLocation) const;
+	FVector GetNextSegmentLocation(FVector CurrentLocation) const;
+	FQuat GetNextSegmentRotation(FVector CurrentLocation) const;
+	FVector GetNextSegmentScale (FVector CurrentLocation) const;
 
 	// Components
 	UPROPERTY(VisibleAnywhere)
@@ -38,4 +43,6 @@ private:
 
 	// State
 	FVector PreviousCursorLocation;
+
+	TArray<FVector> Points;
 };

@@ -4,6 +4,7 @@
 #include "Stroke.h"
 
 #include "Kismet/KismetMathLibrary.h"
+#include "Engine/World.h"
 #include "Math/Rotator.h"
 
 // Sets default values
@@ -23,6 +24,8 @@ AStroke::AStroke()
 
 void AStroke::Update(FVector CursorLocation)
 {
+	Points.Add(CursorLocation);
+	
 	if(PreviousCursorLocation.IsNearlyZero())
 	{
 		PreviousCursorLocation = CursorLocation;
@@ -35,7 +38,26 @@ void AStroke::Update(FVector CursorLocation)
 	PreviousCursorLocation = CursorLocation;
 }
 
-FTransform AStroke::GetNextSegmentTransform(FVector CurrentLocation)
+FStrokeState AStroke::SerializeToStruct() const
+{
+	FStrokeState StrokeState;
+	StrokeState.StrokeClass = GetClass();
+	StrokeState.ControlPoints = Points;
+	return StrokeState;
+}
+
+AStroke* AStroke::SpawnAndDeserializeFromStruct(UWorld* World, const FStrokeState& StrokeState)
+{
+	AStroke* Stroke = World->SpawnActor<AStroke>(StrokeState.StrokeClass);
+	
+	for (FVector Point : StrokeState.ControlPoints)
+	{
+		Stroke->Update(Point);	
+	}
+	return Stroke;
+}
+
+FTransform AStroke::GetNextSegmentTransform(const FVector CurrentLocation) const
 {
 	FTransform SegmentTransform;
 
@@ -46,26 +68,26 @@ FTransform AStroke::GetNextSegmentTransform(FVector CurrentLocation)
 	return SegmentTransform;
 }
 
-FTransform AStroke::GetNextJointTransform(FVector CurrentLocation)
+FTransform AStroke::GetNextJointTransform(const FVector CurrentLocation) const
 {
 	FTransform JointTransform;
 	JointTransform.SetLocation(GetTransform().InverseTransformPosition(CurrentLocation));
 	return JointTransform;
 }
 
-FVector AStroke::GetNextSegmentLocation(FVector CurrentLocation)
+FVector AStroke::GetNextSegmentLocation(FVector CurrentLocation) const
 {
 
 	return GetTransform().InverseTransformPosition(PreviousCursorLocation);
 }
 
-FQuat AStroke::GetNextSegmentRotation(FVector CurrentLocation) 
+FQuat AStroke::GetNextSegmentRotation(const FVector CurrentLocation) const
 {
-	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(PreviousCursorLocation, CurrentLocation);
+	const FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(PreviousCursorLocation, CurrentLocation);
 	return Rotator.Quaternion();
 }
 
-FVector AStroke::GetNextSegmentScale(FVector CurrentLocation) 
+FVector AStroke::GetNextSegmentScale(const FVector CurrentLocation) const
 {
 	return FVector((CurrentLocation - PreviousCursorLocation).Size(), 1, 1);
 }
