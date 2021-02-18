@@ -3,13 +3,18 @@
 
 #include "PaintingGrid.h"
 
-#include "EdGraph/EdGraphNode.h"
+
+#include "Components/SizeBox.h"
 
 void UPaintingGrid::AddPainting()
 {
-	if(PaintingGrid)
+	if(!PaintingGrid) return;
+	
+	UUserWidget* NewWidget = CreateWidget<UUserWidget>(GetWorld(), GridCardClass);
+	if(!NewWidget) return;
+	
+	if(USizeBox* SizeBox = Cast<USizeBox>(PaintingGrid->GetChildAt(0)))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Grid name: %s"), *PaintingGrid->GetName());
-		
+		SizeBox->AddChild(NewWidget);
 	}
 }

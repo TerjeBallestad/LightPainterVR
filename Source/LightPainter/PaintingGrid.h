@@ -25,4 +25,8 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable)
 	void AddPainting();
+
+private:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> GridCardClass;
 };
