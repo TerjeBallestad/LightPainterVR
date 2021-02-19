@@ -4,22 +4,25 @@
 #include "PaintSaveGame.h"
 #include "EngineUtils.h"
 #include "Kismet/GameplayStatics.h"
+#include "Misc/Guid.h"
 #include "Stroke.h"
 
 UPaintSaveGame* UPaintSaveGame::Create()
 {
-	USaveGame* NewSaveGame = UGameplayStatics::CreateSaveGameObject(StaticClass());
-	return Cast<UPaintSaveGame>(NewSaveGame);
+	UPaintSaveGame* NewSaveGame = Cast<UPaintSaveGame> (UGameplayStatics::CreateSaveGameObject(StaticClass()));
+	NewSaveGame->SlotName = FGuid::NewGuid().ToString();
+	
+	return NewSaveGame;
 }
 
 bool UPaintSaveGame::Save()
 {
-	return UGameplayStatics::SaveGameToSlot(this, TEXT("Slot1"), 0);
+	return UGameplayStatics::SaveGameToSlot(this, SlotName, 0);
 }
 
-UPaintSaveGame* UPaintSaveGame::Load()
+UPaintSaveGame* UPaintSaveGame::Load(FString SlotName)
 {
-	return Cast<UPaintSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Slot1"), 0));
+	return Cast<UPaintSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
 }
 
 void UPaintSaveGame::SerializeFromWorld(UWorld* World)

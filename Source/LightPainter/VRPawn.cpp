@@ -26,6 +26,13 @@ void AVRPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UPaintSaveGame* Painting = UPaintSaveGame::Create();
+	if(Painting)
+	{
+		Painting->Save();
+		CurrentSlotName = Painting->GetSlotName();
+	}
+	
 	RightMController = GetWorld()->SpawnActor<AHandControllerBase>(PaintBrushHandControllerClass);
 	if(RightMController != nullptr)
 	{
@@ -46,16 +53,19 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AVRPawn::Save()
 {
-	UPaintSaveGame* Painting = UPaintSaveGame::Create();
-	Painting->SetState("hello world");
-	Painting->SerializeFromWorld(GetWorld());
-	UE_LOG(LogTemp, Warning, TEXT("Painting State  %s"), *Painting->GetState());
-	Painting->Save();
+	UPaintSaveGame* Painting = UPaintSaveGame::Load(CurrentSlotName);
+	if(Painting)
+	{
+		Painting->SetState("hello world");
+		Painting->SerializeFromWorld(GetWorld());
+		UE_LOG(LogTemp, Warning, TEXT("Painting State  %s"), *Painting->GetState());
+		Painting->Save();
+	}
 }
 
 void AVRPawn::Load()
 {
-	UPaintSaveGame* Painting = UPaintSaveGame::Load();
+	UPaintSaveGame* Painting = UPaintSaveGame::Load(CurrentSlotName);
 	if(Painting)
 	{
 		Painting->DeserializeToWorld(GetWorld());
