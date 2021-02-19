@@ -5,6 +5,7 @@
 
 
 #include "HandControllerBase.h"
+#include "PaintingSaveGameIndex.h"
 #include "Camera/CameraComponent.h"
 #include "PaintSaveGame.h"
 
@@ -65,6 +66,14 @@ void AVRPawn::Save()
 
 void AVRPawn::Load()
 {
+	UPaintingSaveGameIndex* Index = UPaintingSaveGameIndex::Load();
+	if(Index)
+	{
+		for (FString SlotName : Index->GetSlotNames())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Slot: %s"), *SlotName);	
+		}
+	}
 	UPaintSaveGame* Painting = UPaintSaveGame::Load(CurrentSlotName);
 	if(Painting)
 	{
