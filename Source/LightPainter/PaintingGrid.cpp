@@ -3,18 +3,19 @@
 
 #include "PaintingGrid.h"
 
-
 #include "Components/SizeBox.h"
 
-void UPaintingGrid::AddPainting()
+void UPaintingGrid::AddPainting(int32 PaintingIndex, FString SlotName)
 {
 	if(!PaintingGrid) return;
 	
-	UUserWidget* NewWidget = CreateWidget<UUserWidget>(GetWorld(), GridCardClass);
+	UGridCard* NewWidget = CreateWidget<UGridCard>(GetWorld(), GridCardClass);
 	if(!NewWidget) return;
 	
-	if(USizeBox* SizeBox = Cast<USizeBox>(PaintingGrid->GetChildAt(0)))
+	if(USizeBox* SizeBox = Cast<USizeBox>(PaintingGrid->GetChildAt(PaintingIndex)))
 	{
 		SizeBox->AddChild(NewWidget);
+		NewWidget->SetPaintingName(SlotName);
+		
 	}
 }

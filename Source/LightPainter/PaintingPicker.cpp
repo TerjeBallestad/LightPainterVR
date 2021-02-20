@@ -4,6 +4,7 @@
 #include "PaintingPicker.h"
 
 #include "PaintingGrid.h"
+#include "PaintingSaveGameIndex.h"
 
 APaintingPicker::APaintingPicker()
 {
@@ -12,8 +13,8 @@ APaintingPicker::APaintingPicker()
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
 	
-	PaintingGrid1 = CreateDefaultSubobject<UWidgetComponent>(TEXT("PaintingGrid"));
-	PaintingGrid1->SetupAttachment(Root);
+	PaintingGrid = CreateDefaultSubobject<UWidgetComponent>(TEXT("PaintingGrid"));
+	PaintingGrid->SetupAttachment(Root);
 	
 	ActionBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("ActionBar"));
 	ActionBar->SetupAttachment(Root);
@@ -23,11 +24,16 @@ void APaintingPicker::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid1->GetUserWidgetObject()))
-	{
-		PaintingWidget->AddPainting();
-	}
+	UPaintingSaveGameIndex* Index = UPaintingSaveGameIndex::Load();
+	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());
+	if(!PaintingWidget) return;
+	int32 PaintingIndex = 0;
 	
+	for (FString SlotName : Index->GetSlotNames())
+	{
+		PaintingWidget->AddPainting(PaintingIndex, SlotName);
+		++PaintingIndex;
+	}
 }
 
 

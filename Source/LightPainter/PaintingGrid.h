@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "GridCard.h"
 #include "Blueprint/UserWidget.h"
 
 #include "Components/UniformGridPanel.h"
@@ -24,9 +26,9 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void AddPainting();
+	void AddPainting(int32 PaintingIndex, FString SlotName);
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> GridCardClass;
+	TSubclassOf<UGridCard> GridCardClass;
 };

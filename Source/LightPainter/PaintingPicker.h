@@ -26,7 +26,7 @@ private:
 	USceneComponent* Root;
 	
 	UPROPERTY(VisibleAnywhere)
-	UWidgetComponent* PaintingGrid1;
+	UWidgetComponent* PaintingGrid;
 
 	UPROPERTY(VisibleAnywhere)
 	UWidgetComponent* ActionBar;
