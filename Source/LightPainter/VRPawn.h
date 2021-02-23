@@ -27,7 +27,6 @@ private:
 	void RightTriggerReleased(){ if(RightMController) RightMController->TriggerReleased(); };
 
 	void Save();
-	void Load();
 	
 	// Config
 	UPROPERTY(EditDefaultsOnly)
