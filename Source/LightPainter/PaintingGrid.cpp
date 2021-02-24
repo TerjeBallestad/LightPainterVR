@@ -19,3 +19,14 @@ void UPaintingGrid::AddPainting(int32 PaintingIndex, FString SlotName)
 		
 	}
 }
+
+void UPaintingGrid::ClearPaintings()
+{
+	for (UWidget* Child : PaintingGrid->GetAllChildren())
+	{
+		if(USizeBox* SizeBox = Cast<USizeBox>(Child))
+		{
+			SizeBox->ClearChildren();
+		}
+	}
+}

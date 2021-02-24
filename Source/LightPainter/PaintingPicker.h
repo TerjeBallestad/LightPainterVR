@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
+
+#include "PaintingSaveGameIndex.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
 #include "PaintingPicker.generated.h"
@@ -17,11 +19,17 @@ public:
 	// Sets default values for this actor's properties
 	APaintingPicker();
 
+	void AddPainting();
+
+	void ToggleDeleteMode(){ bDeleteMode = !bDeleteMode; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
+	void RefreshSlots();
+	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 	
@@ -30,8 +38,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UWidgetComponent* ActionBar;
-	
-	
 
-
+	UPROPERTY()
+	bool bDeleteMode;
+	
 };

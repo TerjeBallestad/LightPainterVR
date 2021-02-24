@@ -5,6 +5,7 @@
 
 
 #include "HandControllerBase.h"
+#include "PaintingGameMode.h"
 #include "PaintingSaveGameIndex.h"
 #include "Camera/CameraComponent.h"
 #include "PaintSaveGame.h"
@@ -27,13 +28,6 @@ AVRPawn::AVRPawn()
 void AVRPawn::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UPaintSaveGame* Painting = UPaintSaveGame::Create();
-	if(Painting)
-	{
-		Painting->Save();
-		CurrentSlotName = Painting->GetSlotName();
-	}
 	
 	RightMController = GetWorld()->SpawnActor<AHandControllerBase>(PaintBrushHandControllerClass);
 	if(RightMController != nullptr)
@@ -50,19 +44,15 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction(TEXT("RightTrigger"),IE_Pressed, this, &AVRPawn::RightTriggerPressed);
 	PlayerInputComponent->BindAction(TEXT("RightTrigger"),IE_Released, this, &AVRPawn::RightTriggerReleased);
 	PlayerInputComponent->BindAction(TEXT("Save"), IE_Released, this, &AVRPawn::Save);
-	//PlayerInputComponent->BindAction(TEXT("Load"), IE_Released, this, &AVRPawn::Load);
 }
 
 void AVRPawn::Save()
 {
-	UPaintSaveGame* Painting = UPaintSaveGame::Load(CurrentSlotName);
-	if(Painting)
-	{
-		Painting->SetState("hello world");
-		Painting->SerializeFromWorld(GetWorld());
-		UE_LOG(LogTemp, Warning, TEXT("Painting State  %s"), *Painting->GetState());
-		Painting->Save();
-	}
+	auto GameMode = Cast<APaintingGameMode>(GetWorld()->GetAuthGameMode());
+	if(!GameMode) return;
+	GameMode->Save();
+
+	UGameplayStatics::OpenLevel(GetWorld(), "MainMenu");
 }
 
 

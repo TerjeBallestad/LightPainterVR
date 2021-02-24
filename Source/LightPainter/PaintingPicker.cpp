@@ -3,6 +3,8 @@
 
 #include "PaintingPicker.h"
 
+
+#include "ActionBar.h"
 #include "PaintingGrid.h"
 #include "PaintingSaveGameIndex.h"
 
@@ -24,17 +26,37 @@ void APaintingPicker::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UPaintingSaveGameIndex* Index = UPaintingSaveGameIndex::Load();
-	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());
-	if(!PaintingWidget) return;
-	int32 PaintingIndex = 0;
-	
-	for (FString SlotName : Index->GetSlotNames())
+
+	UActionBar* ActionBarWidget = Cast<UActionBar>( ActionBar->GetUserWidgetObject());
+	if(ActionBarWidget)
 	{
-		PaintingWidget->AddPainting(PaintingIndex, SlotName);
-		++PaintingIndex;
+		ActionBarWidget->SetParenPicker(this);
 	}
+	
+	RefreshSlots();
 }
 
+void APaintingPicker::AddPainting()
+{
+	UPaintSaveGame::Create();
+	RefreshSlots();
+}
+
+void APaintingPicker::RefreshSlots()
+{
+	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());
+	if(!PaintingWidget) return;
+
+	PaintingWidget->ClearPaintings();
+	
+	int32 i = 0;
+	
+	for (FString SlotName : UPaintingSaveGameIndex::Load()->GetSlotNames())
+	{
+		PaintingWidget->AddPainting(i, SlotName);
+		++i;
+	}
+	
+}
 
 

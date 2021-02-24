@@ -42,8 +42,4 @@ private:
 	// Reference
 	UPROPERTY(VisibleAnywhere)
 	AHandControllerBase* RightMController;
-
-	// State
-	FString CurrentSlotName;
-	
 };

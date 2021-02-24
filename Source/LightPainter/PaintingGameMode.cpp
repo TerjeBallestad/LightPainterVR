@@ -20,6 +20,21 @@ void APaintingGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Load();
+}
+
+void APaintingGameMode::Save()
+{
+	UPaintSaveGame* Painting = UPaintSaveGame::Load(SlotName);
+	if(Painting)
+	{
+		Painting->SerializeFromWorld(GetWorld());
+		Painting->Save();
+	}
+}
+
+void APaintingGameMode::Load()
+{	
 	UPaintSaveGame* Painting = UPaintSaveGame::Load(SlotName);
 	if(Painting)
 	{
@@ -30,4 +45,3 @@ void APaintingGameMode::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Save game not Found %s"), *SlotName);
 	}
 }
-
