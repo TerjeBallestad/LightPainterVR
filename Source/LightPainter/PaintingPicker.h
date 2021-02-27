@@ -21,7 +21,7 @@ public:
 
 	void AddPainting();
 
-	void ToggleDeleteMode(){ bDeleteMode = !bDeleteMode; }
+	void ToggleDeleteMode();
 
 protected:
 	// Called when the game starts or when spawned

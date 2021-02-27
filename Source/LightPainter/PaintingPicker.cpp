@@ -42,6 +42,15 @@ void APaintingPicker::AddPainting()
 	RefreshSlots();
 }
 
+void APaintingPicker::ToggleDeleteMode()
+{
+	bDeleteMode = !bDeleteMode;
+	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());
+	if(!PaintingWidget) return;
+	PaintingWidget->ClearPaintings();
+
+}
+
 void APaintingPicker::RefreshSlots()
 {
 	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());

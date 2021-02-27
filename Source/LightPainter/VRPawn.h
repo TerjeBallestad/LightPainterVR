@@ -30,7 +30,10 @@ private:
 	
 	// Config
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AHandControllerBase> PaintBrushHandControllerClass;
+	TSubclassOf<AHandControllerBase> RightHandControllerClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AHandControllerBase> LeftHandControllerClass;
 
 	// Components
 	UPROPERTY(VisibleAnywhere)
@@ -40,6 +43,9 @@ private:
 	UCameraComponent* VRCamera;
 	
 	// Reference
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 	AHandControllerBase* RightMController;
+
+	UPROPERTY()
+	AHandControllerBase* LeftMController;
 };

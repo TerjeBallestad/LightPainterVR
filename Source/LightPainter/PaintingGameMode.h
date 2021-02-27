@@ -19,7 +19,10 @@ protected:
 
 public:
 	virtual  void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
+	UFUNCTION(BlueprintCallable)
 	void Save();
+
 	void Load();
 
 private:

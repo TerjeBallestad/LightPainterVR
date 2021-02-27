@@ -28,14 +28,18 @@ AVRPawn::AVRPawn()
 void AVRPawn::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if(!RightHandControllerClass) return;
+	RightMController = GetWorld()->SpawnActor<AHandControllerBase>(RightHandControllerClass);
+	RightMController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+	RightMController->SetOwner(this);
+	RightMController->SetHand(EControllerHand::Right);
 	
-	RightMController = GetWorld()->SpawnActor<AHandControllerBase>(PaintBrushHandControllerClass);
-	if(RightMController != nullptr)
-	{
-		RightMController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
-		RightMController->SetOwner(this);
-		RightMController->SetHand(EControllerHand::Right);
-	}
+	if(!LeftHandControllerClass) return;
+	LeftMController = GetWorld()->SpawnActor<AHandControllerBase>(LeftHandControllerClass);
+	LeftMController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+	LeftMController->SetOwner(this);
+	LeftMController->SetHand(EControllerHand::Left);
 }
 
 void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

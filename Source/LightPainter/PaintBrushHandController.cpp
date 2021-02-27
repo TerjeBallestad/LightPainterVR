@@ -2,7 +2,6 @@
 
 
 #include "PaintBrushHandController.h"
-#include "MotionControllerComponent.h"
 
 APaintBrushHandController::APaintBrushHandController()
 {
