@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "PaginationDots.generated.h"
+#include "PaginationDot.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class LIGHTPAINTER_API UPaginationDots : public UUserWidget
+class LIGHTPAINTER_API UPaginationDot : public UUserWidget
 {
 	GENERATED_BODY()
 
