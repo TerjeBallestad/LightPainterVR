@@ -45,3 +45,9 @@ void APaintingGameMode::Load()
 		UE_LOG(LogTemp, Warning, TEXT("Save game not Found %s"), *SlotName);
 	}
 }
+
+void APaintingGameMode::SaveAndQuit()
+{
+	Save();
+	UGameplayStatics::OpenLevel(GetWorld(), "MainMenu");
+}

@@ -26,8 +26,6 @@ private:
 	void RightTriggerPressed(){ if(RightMController) RightMController->TriggerPressed(); };
 	void RightTriggerReleased(){ if(RightMController) RightMController->TriggerReleased(); };
 
-	void Save();
-	
 	// Config
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AHandControllerBase> RightHandControllerClass;

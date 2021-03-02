@@ -24,6 +24,9 @@ public:
 	void Save();
 
 	void Load();
+	
+	UFUNCTION(BlueprintCallable)
+	void SaveAndQuit();
 
 private:
 	UPROPERTY()

@@ -10,13 +10,9 @@ void UWidgetTouchingComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	if(IsOverInteractableWidget() && !bClicked)
 	{
 		PressPointerKey(EKeys::LeftMouseButton);
+		ReleasePointerKey(EKeys::LeftMouseButton);
 		UE_LOG(LogTemp, Warning, TEXT("Clicked"))
 		bClicked = true;
 		
-	} else if(!IsOverInteractableWidget() && bClicked)
-	{
-		ReleasePointerKey(EKeys::LeftMouseButton);
-		UE_LOG(LogTemp, Warning, TEXT("Released"))
-		bClicked = false;
 	}
 }

@@ -5,10 +5,7 @@
 
 
 #include "HandControllerBase.h"
-#include "PaintingGameMode.h"
-#include "PaintingSaveGameIndex.h"
 #include "Camera/CameraComponent.h"
-#include "PaintSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -47,16 +44,6 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction(TEXT("RightTrigger"),IE_Pressed, this, &AVRPawn::RightTriggerPressed);
 	PlayerInputComponent->BindAction(TEXT("RightTrigger"),IE_Released, this, &AVRPawn::RightTriggerReleased);
-	PlayerInputComponent->BindAction(TEXT("Save"), IE_Released, this, &AVRPawn::Save);
-}
-
-void AVRPawn::Save()
-{
-	auto GameMode = Cast<APaintingGameMode>(GetWorld()->GetAuthGameMode());
-	if(!GameMode) return;
-	GameMode->Save();
-
-	UGameplayStatics::OpenLevel(GetWorld(), "MainMenu");
 }
 
 
