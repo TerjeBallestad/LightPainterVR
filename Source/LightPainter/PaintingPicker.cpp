@@ -25,7 +25,15 @@ APaintingPicker::APaintingPicker()
 void APaintingPicker::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());
+	if(PaintingWidget)
+	{
+		PaintingWidget->AddPaginationDot(true);	
+		PaintingWidget->AddPaginationDot(false);	
+		PaintingWidget->AddPaginationDot(false);	
+	    
+	}
 
 	UActionBar* ActionBarWidget = Cast<UActionBar>( ActionBar->GetUserWidgetObject());
 	if(ActionBarWidget)

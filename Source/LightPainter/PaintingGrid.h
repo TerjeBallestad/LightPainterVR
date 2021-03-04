@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 
 #include "GridCard.h"
+#include "PaginationDot.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/HorizontalBox.h"
 
 #include "Components/UniformGridPanel.h"
 
@@ -24,7 +26,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (BindWidget))
 	UUniformGridPanel* PaintingGrid;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (BindWidget))
+	UHorizontalBox* PaginationBox;
+
 public:
+	void AddPaginationDot(bool Active);
+	
 	UFUNCTION(BlueprintCallable)
 	void AddPainting(int32 PaintingIndex, FString SlotName);
 
@@ -34,4 +41,10 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGridCard> GridCardClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UPaginationDot> DotClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	float DotPadding = 8;
 };
