@@ -23,8 +23,10 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	void RightTriggerPressed(){ if(RightMController) RightMController->TriggerPressed(); };
-	void RightTriggerReleased(){ if(RightMController) RightMController->TriggerReleased(); };
+	void RightTriggerPressed(){ if(RightMController) RightMController->TriggerPressed(); }
+	void RightTriggerReleased(){ if(RightMController) RightMController->TriggerReleased(); }
+
+	void PaginateRightAxisInput(float Value);
 
 	// Config
 	UPROPERTY(EditDefaultsOnly)
@@ -32,6 +34,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AHandControllerBase> LeftHandControllerClass;
+
+	UPROPERTY()
+	float PaginationInputThreshold = 0.9;
 
 	// Components
 	UPROPERTY(VisibleAnywhere)
@@ -46,4 +51,7 @@ private:
 
 	UPROPERTY()
 	AHandControllerBase* LeftMController;
+
+	// State
+	int32 PreviousPaginationInput;
 };
