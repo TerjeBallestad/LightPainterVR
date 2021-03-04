@@ -17,6 +17,12 @@ void UPaintingGrid::AddPaginationDot(bool Active)
 	NewDot->SetActive(Active);
 }
 
+int32 UPaintingGrid::GetNumberOfSlots() const
+{
+	return PaintingGrid->GetChildrenCount();
+}
+
+
 void UPaintingGrid::AddPainting(int32 PaintingIndex, FString SlotName)
 {
 	if(!PaintingGrid) return;
@@ -41,4 +47,9 @@ void UPaintingGrid::ClearPaintings()
 			SizeBox->ClearChildren();
 		}
 	}
+}
+
+void UPaintingGrid::ClearDots()
+{
+	PaginationBox->ClearChildren();
 }

@@ -31,6 +31,8 @@ protected:
 
 public:
 	void AddPaginationDot(bool Active);
+	int32 GetNumberOfSlots() const;
+	void ClearDots();
 	
 	UFUNCTION(BlueprintCallable)
 	void AddPainting(int32 PaintingIndex, FString SlotName);

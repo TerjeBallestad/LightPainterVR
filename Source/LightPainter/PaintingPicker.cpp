@@ -25,14 +25,13 @@ APaintingPicker::APaintingPicker()
 void APaintingPicker::BeginPlay()
 {
 	Super::BeginPlay();
+
 	
-	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());
-	if(PaintingWidget)
+	if(GetPaintingGrid())
 	{
-		PaintingWidget->AddPaginationDot(true);	
-		PaintingWidget->AddPaginationDot(false);	
-		PaintingWidget->AddPaginationDot(false);	
-	    
+		GetPaintingGrid()->AddPaginationDot(true);	
+		GetPaintingGrid()->AddPaginationDot(false);	
+		GetPaintingGrid()->AddPaginationDot(false);	
 	}
 
 	UActionBar* ActionBarWidget = Cast<UActionBar>( ActionBar->GetUserWidgetObject());
@@ -40,40 +39,57 @@ void APaintingPicker::BeginPlay()
 	{
 		ActionBarWidget->SetParenPicker(this);
 	}
-	
-	RefreshSlots();
+
+	Refresh();
 }
 
 void APaintingPicker::AddPainting()
 {
 	UPaintSaveGame::Create();
-	RefreshSlots();
+	Refresh();
 }
 
 void APaintingPicker::ToggleDeleteMode()
 {
 	bDeleteMode = !bDeleteMode;
-	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());
-	if(!PaintingWidget) return;
-	PaintingWidget->ClearPaintings();
+	if(!GetPaintingGrid()) return;
+	GetPaintingGrid()->ClearPaintings();
 
 }
 
 void APaintingPicker::RefreshSlots()
 {
-	UPaintingGrid* PaintingWidget = Cast<UPaintingGrid>( PaintingGrid->GetUserWidgetObject());
-	if(!PaintingWidget) return;
+	if(!GetPaintingGrid()) return;
 
-	PaintingWidget->ClearPaintings();
+	GetPaintingGrid()->ClearPaintings();
 	
 	int32 i = 0;
 	
 	for (FString SlotName : UPaintingSaveGameIndex::Load()->GetSlotNames())
 	{
-		PaintingWidget->AddPainting(i, SlotName);
+		GetPaintingGrid()->AddPainting(i, SlotName);
 		++i;
 	}
 	
+	UE_LOG(LogTemp, Warning, TEXT("Number of Pages %d"), GetNumberOfPages())
+}
+
+void APaintingPicker::RefreshDots()
+{
+	if(!GetPaintingGrid()) return;
+	GetPaintingGrid()->ClearDots();
+	for (int i = 0; i < GetNumberOfPages(); ++i)
+	{
+		GetPaintingGrid()->AddPaginationDot(i == CurrentPage);
+	}
+	
+}
+
+int32 APaintingPicker::GetNumberOfPages()
+{
+	if(!GetPaintingGrid()) return 0;
+	int32 SlotAmount = UPaintingSaveGameIndex::Load()->GetSlotNames().Num();
+	return FMath::DivideAndRoundUp(SlotAmount, GetPaintingGrid()->GetNumberOfSlots());
 }
 
 
