@@ -4,7 +4,10 @@
 #include "VRPawn.h"
 
 
+
+#include "EngineUtils.h"
 #include "HandControllerBase.h"
+#include "PaintingPicker.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -56,9 +59,17 @@ void AVRPawn::PaginateRightAxisInput(float Value)
 
 	if(PaginationInput != PreviousPaginationInput && PaginationInput != 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Pagingation input: %d"), PaginationInput)
+		UpdateCurrentPage(PaginationInput);
 	}
 	PreviousPaginationInput = PaginationInput;
+}
+
+void AVRPawn::UpdateCurrentPage(int32 Offset)
+{
+	for(TActorIterator<APaintingPicker> PaintingPickerItr(GetWorld()); PaintingPickerItr; ++PaintingPickerItr)
+	{
+		PaintingPickerItr->UpdateCurrentPage(Offset);
+	}
 }
 
 
